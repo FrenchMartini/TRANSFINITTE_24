@@ -71,10 +71,21 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(libs.web3j.maven.plugin)
 
-
     //hilt
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    //retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.okhttp)
+}
+
+kapt {
+    correctErrorTypes = true
+}
+
+hilt {
+    enableAggregatingTask = false
 }

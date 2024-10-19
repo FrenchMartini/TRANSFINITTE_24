@@ -1,11 +1,16 @@
 package com.example.transfinitte_24_ip_dapp.di
 
+import com.example.transfinitte_24_ip_dapp.backend.Web3PatentClient
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.OkHttpClient
 import org.web3j.protocol.Web3j
 import org.web3j.protocol.http.HttpService
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @Module
@@ -13,8 +18,23 @@ import javax.inject.Singleton
 object AppModule {
     @Provides
     @Singleton
-    fun provideWeb3j(): Web3j {
-        return Web3j.build(HttpService("https://sepolia.infura.io/v3/563f3d565c694d9983e98b8eeb70b62d"))
-    }
+    fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+        .connectTimeout(
+            60,
+            TimeUnit.SECONDS
+        )
+        .readTimeout(
+            60,
+            TimeUnit.SECONDS
+        )
+        .build()
 
+    @Provides
+    @Singleton
+    fun provideWeb3PatentClient(okHttpClient: OkHttpClient): Web3PatentClient = Retrofit.Builder()
+        .baseUrl("http://localhost:8000")
+        .client(okHttpClient)
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+        .create(Web3PatentClient::class.java)
 }

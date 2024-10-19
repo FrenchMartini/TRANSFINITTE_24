@@ -1,4 +1,5 @@
 package com.example.transfinitte_24_ip_dapp.navigation
 
-class Screens {
+sealed class Screens(val route: String) {
+    data object LandingPage : Screens("LandingPage")
 }
