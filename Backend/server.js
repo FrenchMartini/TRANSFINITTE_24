@@ -1,11 +1,17 @@
 const express = require('express');
-const app = express();
-require('dotenv').config();
 const bodyParser = require('body-parser');
-app.use(bodyParser.json());
-const patentRoutes = require('./routes/patentRoutes');
-app.use('/api/patents', patentRoutes);
+const patentRoutes = require('./routes/patentRoutes'); // Adjust the path as needed
+require('dotenv').config();
+
+const app = express();
 const PORT = process.env.PORT || 3000;
+
+// Middleware to parse JSON bodies
+app.use(bodyParser.json());
+
+// Use the patent routes
+app.use('/', patentRoutes);
+
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
