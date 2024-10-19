@@ -8,6 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.transfinitte_24_ip_dapp.MainViewModel
 import com.example.transfinitte_24_ip_dapp.screens.LandingPage
+import com.example.transfinitte_24_ip_dapp.screens.RegisterPage
 
 @Composable
 fun Navigation(modifier: Modifier = Modifier) {
@@ -20,6 +21,10 @@ fun Navigation(modifier: Modifier = Modifier) {
     ) {
         composable(route = Screens.LandingPage.route) {
             LandingPage()
+        }
+
+        composable(route = Screens.RegisterPage.route) {
+            RegisterPage()
         }
     }
 }
