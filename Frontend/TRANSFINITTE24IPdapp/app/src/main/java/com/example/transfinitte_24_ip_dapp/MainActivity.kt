@@ -12,10 +12,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.transfinitte_24_ip_dapp.ui.theme.TRANSFINITTE24IPdappTheme
+import org.web3j.protocol.Web3j
+import org.web3j.protocol.http.HttpService
 
 class MainActivity : ComponentActivity() {
+
+//    private lateinit var web3j: Web3j
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+//        web3j = Web3j.build(HttpService("https://sepolia.infura.io/v3/563f3d565c694d9983e98b8eeb70b62d"))
         enableEdgeToEdge()
         setContent {
             TRANSFINITTE24IPdappTheme {
