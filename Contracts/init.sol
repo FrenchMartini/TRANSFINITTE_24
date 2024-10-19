@@ -10,14 +10,11 @@ contract PatentRegistry {
         address owner;
         uint256 registrationDate;
         uint256 expirationDate;
-        string ipfsHash; // IPFS hash for the patent file
+        string ipfsHash; 
     }
 
     // Constants
     uint256 public constant DURATION = 365 * 24 * 60 * 60; // 1 year in seconds
-    uint256 public constant registrationFee = 0.01 ether; // Fee for registration
-    uint256 public constant transferFee = 0.005 ether; // Fee for patent transfer
-    uint256 public constant renewalFee = 0.002 ether; // Fee for renewal
 
     // Counter for unique patent IDs
     uint256 public patentCounter;
@@ -37,10 +34,8 @@ contract PatentRegistry {
         patentCounter = 0; // Initialize the patent ID counter
     }
 
-    // Function to register a new patent (requires registration fee and IPFS hash)
-    function registerPatent(string memory _title, string memory _description, string memory _ipfsHash) public payable {
-        require(msg.value >= registrationFee, "Insufficient registration fee");
-
+    // Function to register a new patent (no fee required)
+    function registerPatent(string memory _title, string memory _description, string memory _ipfsHash) public {
         patentCounter++;
         uint256 newPatentId = patentCounter;
 
@@ -61,38 +56,28 @@ contract PatentRegistry {
         emit PatentRegistered(newPatentId, _title, msg.sender, _ipfsHash);
     }
 
-    // Function to transfer a patent from the current owner to another address (requires transfer fee)
-    function transferPatent(uint256 _patentId, address _to) public payable {
-        require(msg.value >= transferFee, "Insufficient transfer fee");
+    function transferPatent(uint256 _patentId, address _to) public {
         require(patents[_patentId].owner == msg.sender, "You are not the owner of this patent");
         require(block.timestamp <= patents[_patentId].expirationDate, "Patent has expired, renew it before transfer");
 
         // Transfer ownership
         patents[_patentId].owner = _to;
 
-        // Remove the patent from the current owner's list
         _removePatentFromOwner(msg.sender, _patentId);
 
-        // Add the patent to the new owner's list
         ownerPatents[_to].push(_patentId);
 
-        // Emit event when a patent is transferred
         emit PatentTransferred(_patentId, msg.sender, _to);
     }
 
-    // Function to renew an expired patent (requires renewal fee)
-    function renewPatent(uint256 _patentId) public payable {
-        require(msg.value >= renewalFee, "Insufficient renewal fee");
+    function renewPatent(uint256 _patentId) public {
         require(patents[_patentId].owner == msg.sender, "You are not the owner of this patent");
 
-        // Extend expiration date
         patents[_patentId].expirationDate += DURATION;
 
-        // Emit event when a patent is renewed
         emit PatentRenewed(_patentId, patents[_patentId].expirationDate);
     }
 
-    // Function to get the details of a patent
     function getPatentDetails(uint256 _patentId) public view returns (string memory title, string memory description, address owner, uint256 registrationDate, uint256 expirationDate, string memory ipfsHash) {
         Patent memory patent = patents[_patentId];
         return (patent.title, patent.description, patent.owner, patent.registrationDate, patent.expirationDate, patent.ipfsHash);
@@ -100,6 +85,32 @@ contract PatentRegistry {
 
     // Function to get all patents owned by a specific address
     function getOwnerPatents(address _owner) public view returns (uint256[] memory) {
+        return ownerPatents[_owner];
+    }
+
+    // Search function to find patents by title or description
+    function searchPatents(string memory _query) public view returns (uint256[] memory) {
+        uint256[] memory results = new uint256[](patentCounter);
+        uint256 count = 0;
+
+        for (uint256 i = 1; i <= patentCounter; i++) {
+            if (contains(patents[i].title, _query) || contains(patents[i].description, _query)) {
+                results[count] = i;
+                count++;
+            }
+        }
+
+        // Resize the results array
+        uint256[] memory filteredResults = new uint256[](count);
+        for (uint256 j = 0; j < count; j++) {
+            filteredResults[j] = results[j];
+        }
+
+        return filteredResults;
+    }
+
+    // Filter function to get patents by owner
+    function filterPatentsByOwner(address _owner) public view returns (uint256[] memory) {
         return ownerPatents[_owner];
     }
 
@@ -115,8 +126,29 @@ contract PatentRegistry {
         }
     }
 
-    // Function to withdraw the collected fees from the contract (only by contract owner)
-    function withdrawFees() public {
-        payable(msg.sender).transfer(address(this).balance);
+    // Helper function to check if a string contains another string (case insensitive)
+    function contains(string memory _str, string memory _search) internal pure returns (bool) {
+        bytes memory strBytes = bytes(_str);
+        bytes memory searchBytes = bytes(_search);
+
+        if (searchBytes.length > strBytes.length) {
+            return false;
+        }
+
+        for (uint256 i = 0; i <= strBytes.length - searchBytes.length; i++) {
+            bool matched = true;
+            for (uint256 j = 0; j < searchBytes.length; j++) {
+                if (strBytes[i + j] != searchBytes[j]) {
+                    matched = false;
+                    break;
+                }
+            }
+
+            if (matched) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
