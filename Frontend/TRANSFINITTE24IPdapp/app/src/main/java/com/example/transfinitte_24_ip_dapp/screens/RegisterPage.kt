@@ -22,10 +22,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.transfinitte_24_ip_dapp.ui.theme.alumniSans
 
 @Composable
-fun RegisterPage(modifier: Modifier = Modifier) {
+fun RegisterPage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -67,7 +69,7 @@ fun RegisterPage(modifier: Modifier = Modifier) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
-                .padding(top = 10.dp),
+                .padding(top = 30.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -87,7 +89,7 @@ fun RegisterPage(modifier: Modifier = Modifier) {
                     contentColor = Color.Black
                 )
             ) {
-                Text(text = "Dashboard", fontSize = 20.sp)
+                Text(text = "Back", fontSize = 20.sp)
             }
         }
     }
@@ -96,5 +98,5 @@ fun RegisterPage(modifier: Modifier = Modifier) {
 @Preview
 @Composable
 private fun RegisterPrev() {
-    RegisterPage()
+    RegisterPage(rememberNavController())
 }

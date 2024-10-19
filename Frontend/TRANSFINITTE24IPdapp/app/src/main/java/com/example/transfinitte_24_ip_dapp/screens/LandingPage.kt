@@ -1,6 +1,7 @@
 package com.example.transfinitte_24_ip_dapp.screens
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -29,17 +31,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.transfinitte_24_ip_dapp.navigation.Screens
 import com.example.transfinitte_24_ip_dapp.ui.theme.alumniSans
 import com.example.transfinitte_24_ip_dapp.ui.theme.anticRegular
 
 
 @Composable
-fun LandingPage() {
+fun LandingPage(navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -70,7 +76,9 @@ fun LandingPage() {
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .horizontalScroll(rememberScrollState())
             ) {
                 Spacer(modifier = Modifier.height(20.dp))
                 Text(
@@ -79,24 +87,79 @@ fun LandingPage() {
                     fontSize = 20.sp,
                     fontFamily = anticRegular
                 )
-                var text by remember { mutableStateOf("Name") }
+                var field1 by remember { mutableStateOf("") }
                 Spacer(modifier = Modifier.fillMaxSize(0.05f))
-                Row(horizontalArrangement = Arrangement.Center, modifier = Modifier.fillMaxWidth()) {
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
                     OutlinedTextField(
                         modifier = Modifier.fillMaxWidth(0.7f),
-                        value = text,
-                        onValueChange = { text = it }, // Handles the text changes
+                        value = field1,
+                        onValueChange = { field1 = it }, // Handles the text changes
                         textStyle = TextStyle(color = Color.White),
                         label = { Text("Title of Patent") }
                     )
                 }
+
+                var field2 by remember { mutableStateOf("") }
+                Spacer(modifier = Modifier.fillMaxSize(0.05f))
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        value = field2,
+                        onValueChange = { field2 = it }, // Handles the text changes
+                        textStyle = TextStyle(color = Color.White),
+                        label = { Text("Name of Author") }
+                    )
+                }
+
+                var field3 by remember { mutableStateOf("") }
+                Spacer(modifier = Modifier.fillMaxSize(0.05f))
+                Row(
+                    horizontalArrangement = Arrangement.Center,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    OutlinedTextField(
+                        modifier = Modifier.fillMaxWidth(0.7f),
+                        value = field3,
+                        onValueChange = { field3 = it }, // Handles the text changes
+                        textStyle = TextStyle(color = Color.White),
+                        label = { Text("Search from abstract/content") }
+                    )
+                }
+
+                Button(
+                    onClick = {},
+                    modifier = Modifier
+                        .width(110.dp)
+                        .padding(vertical = 20.dp),
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Color.White,
+                    ),
+                ) {
+                    Text(
+                        "Search",
+                        color = Color.Black,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center,
+                        fontFamily = anticRegular
+                    )
+                }
+
                 LazyColumnWithTwoTextBoxes()
             }
         }
         Spacer(modifier = Modifier.height(70.dp))
         Row {
             Button(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Screens.RegisterPage.route)
+                },
                 modifier = Modifier.width(110.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -105,12 +168,17 @@ fun LandingPage() {
             ) {
                 Text(
                     "Register Patent",
-                    color = Color.Black, fontSize = 15.sp
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = anticRegular
                 )
             }
             Spacer(modifier = Modifier.width(50.dp))
             Button(
-                onClick = {},
+                onClick = {
+                    navController.navigate(Screens.TransferPage.route)
+                },
                 modifier = Modifier.width(110.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -119,7 +187,10 @@ fun LandingPage() {
             ) {
                 Text(
                     "Transfer Patent",
-                    color = Color.Black, fontSize = 15.sp
+                    color = Color.Black,
+                    fontSize = 18.sp,
+                    textAlign = TextAlign.Center,
+                    fontFamily = anticRegular
                 )
             }
 
@@ -164,5 +235,5 @@ fun LazyColumnWithTwoTextBoxes() {
 @Preview
 @Composable
 private fun LandingPrev() {
-    LandingPage()
+    LandingPage(rememberNavController())
 }
