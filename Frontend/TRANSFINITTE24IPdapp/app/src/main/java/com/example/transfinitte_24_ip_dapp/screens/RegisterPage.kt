@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.transfinitte_24_ip_dapp.ui.theme.alumniSans
 
 @Composable
 fun RegisterPage(modifier: Modifier = Modifier) {
@@ -31,8 +32,14 @@ fun RegisterPage(modifier: Modifier = Modifier) {
             .background(Color(0xFF1B1B1B)),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Register Patent", color = Color.White, fontSize = 40.sp)
-
+        Spacer(modifier = Modifier.fillMaxSize(0.05f))
+        Text(
+            text = "Register Patent",
+            color = Color.White,
+            fontSize = 58.sp,
+            fontFamily = alumniSans
+        )
+        Spacer(modifier = Modifier.fillMaxSize(0.05f))
         Card(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
