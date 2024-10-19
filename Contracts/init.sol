@@ -3,18 +3,25 @@ pragma solidity ^0.8.0;
 
 contract PatentRegistry {
 
+    // Enum to store patent status
+    enum Status { Registered, Granted }
+
     // Struct to store patent information
     struct Patent {
         string title;
+        string abstractText;  // Add abstract field
         string description;
         address owner;
+        uint256 applicationNumber; // Add application number
         uint256 registrationDate;
         uint256 expirationDate;
-        string ipfsHash; 
+        string ipfsHash;
+        Status status;  // Add status field
     }
 
     // Constants
     uint256 public constant DURATION = 365 * 24 * 60 * 60; // 1 year in seconds
+    address public admin;  // Admin address
 
     // Counter for unique patent IDs
     uint256 public patentCounter;
@@ -29,24 +36,49 @@ contract PatentRegistry {
     event PatentRegistered(uint256 patentId, string title, address owner, string ipfsHash);
     event PatentTransferred(uint256 patentId, address from, address to);
     event PatentRenewed(uint256 patentId, uint256 newExpirationDate);
+    event PatentStatusUpdated(uint256 patentId, Status status);
 
     constructor() {
-        patentCounter = 0; // Initialize the patent ID counter
+        admin = msg.sender;  // Set the deployer as admin
+        patentCounter = 0;   // Initialize the patent ID counter
     }
 
-    // Function to register a new patent (no fee required)
-    function registerPatent(string memory _title, string memory _description, string memory _ipfsHash) public {
+    // Modifier to restrict access to admin
+    modifier onlyAdmin() {
+        require(msg.sender == admin, "Only admin can perform this action");
+        _;
+    }
+
+    // Function to generate a random application number
+    function _generateApplicationNumber() internal view returns (uint256) {
+        // This is a pseudo-random number generator, not truly random
+        return uint256(keccak256(abi.encodePacked(block.timestamp, msg.sender))) % 1000000; 
+    }
+
+    // Function to register a new patent
+    function registerPatent(
+        string memory _title, 
+        string memory _abstractText, 
+        string memory _description, 
+        string memory _ipfsHash
+    ) 
+        public 
+    {
         patentCounter++;
         uint256 newPatentId = patentCounter;
+        uint256 applicationNumber = _generateApplicationNumber(); // Generate application number
 
-        // Store patent information including the IPFS hash
+        // Store patent information including the IPFS hash, abstract, and status
         patents[newPatentId] = Patent({
             title: _title,
+            abstractText: _abstractText,  // Store abstract
             description: _description,
             owner: msg.sender,
+            applicationNumber: applicationNumber,  // Store application number
             registrationDate: block.timestamp,
             expirationDate: block.timestamp + DURATION,
-            ipfsHash: _ipfsHash
+            ipfsHash: _ipfsHash,
+            status: Status.Registered  // Set status to Registered on registration
         });
 
         // Track patent ownership
@@ -78,9 +110,36 @@ contract PatentRegistry {
         emit PatentRenewed(_patentId, patents[_patentId].expirationDate);
     }
 
-    function getPatentDetails(uint256 _patentId) public view returns (string memory title, string memory description, address owner, uint256 registrationDate, uint256 expirationDate, string memory ipfsHash) {
+    // Function to change the status of a patent to Granted (admin-only)
+    function grantPatent(uint256 _patentId) public onlyAdmin {
+        patents[_patentId].status = Status.Granted;
+
+        emit PatentStatusUpdated(_patentId, Status.Granted);
+    }
+
+    function getPatentDetails(uint256 _patentId) public view returns (
+        string memory title, 
+        string memory abstractText, 
+        string memory description, 
+        address owner, 
+        uint256 applicationNumber, 
+        uint256 registrationDate, 
+        uint256 expirationDate, 
+        string memory ipfsHash, 
+        Status status
+    ) {
         Patent memory patent = patents[_patentId];
-        return (patent.title, patent.description, patent.owner, patent.registrationDate, patent.expirationDate, patent.ipfsHash);
+        return (
+            patent.title, 
+            patent.abstractText,  // Return abstract
+            patent.description, 
+            patent.owner, 
+            patent.applicationNumber,  // Return application number
+            patent.registrationDate, 
+            patent.expirationDate, 
+            patent.ipfsHash, 
+            patent.status
+        );
     }
 
     // Function to get all patents owned by a specific address
@@ -88,13 +147,13 @@ contract PatentRegistry {
         return ownerPatents[_owner];
     }
 
-    // Search function to find patents by title or description
+    // Search function to find patents by title or abstract
     function searchPatents(string memory _query) public view returns (uint256[] memory) {
         uint256[] memory results = new uint256[](patentCounter);
         uint256 count = 0;
 
         for (uint256 i = 1; i <= patentCounter; i++) {
-            if (contains(patents[i].title, _query) || contains(patents[i].description, _query)) {
+            if (contains(patents[i].title, _query) || contains(patents[i].abstractText, _query)) {
                 results[count] = i;
                 count++;
             }
@@ -107,11 +166,6 @@ contract PatentRegistry {
         }
 
         return filteredResults;
-    }
-
-    // Filter function to get patents by owner
-    function filterPatentsByOwner(address _owner) public view returns (uint256[] memory) {
-        return ownerPatents[_owner];
     }
 
     // Internal function to remove a patent from the current owner's list
