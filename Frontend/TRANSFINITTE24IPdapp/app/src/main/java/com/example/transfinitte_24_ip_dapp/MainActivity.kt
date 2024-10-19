@@ -15,8 +15,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.Navigation
 import com.example.transfinitte_24_ip_dapp.navigation.Navigation
 import com.example.transfinitte_24_ip_dapp.ui.theme.TRANSFINITTE24IPdappTheme
-import org.web3j.protocol.Web3j
-import org.web3j.protocol.http.HttpService
 
 class MainActivity : ComponentActivity() {
 

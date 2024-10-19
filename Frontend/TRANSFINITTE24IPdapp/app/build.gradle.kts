@@ -69,7 +69,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation(libs.web3j.maven.plugin)
 
     //hilt
     implementation(libs.hilt.android)
