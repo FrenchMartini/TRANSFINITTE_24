@@ -32,18 +32,18 @@ Here are some screenshots of the Android app:
 ![Home Screen](Images/home.jpeg)
 
 ## Patent Registration
-![Patent Registration Screen](images/register.jpeg)
+![Patent Registration Screen](Images/register.jpeg)
 
 ## Patent Transfer
-![Patent Transfer Screen](images/transfer.jpeg)
+![Patent Transfer Screen](Images/transfer.jpeg)
 
 ## Etherlink deployment using remix 
-![Etherlink deployment](images/Remix_deployment.png)
+![Etherlink deployment](Images/Remix_deployment.png)
 
 ## Transaction details on metamask wallet
 - We have used metamask wallets to test the working of the block chain - here we can see the gas transcations being made and the users wallet is working.
 - **Every author will have their unique id in the actual implementation of the app.** 
-![Etherlink deployment](images/transactions.png)
+![Etherlink deployment](Images/transactions.png)
 
 ## **Smart Contract Details**
 The `PatentRegistry` smart contract allows users to:
