@@ -1,5 +1,6 @@
 package com.example.transfinitte_24_ip_dapp.screens
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
@@ -29,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -72,7 +74,9 @@ fun LandingPage(navController: NavController) {
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .fillMaxHeight(0.7f),
-            colors = CardDefaults.cardColors(containerColor = Color.Black)
+            colors = CardDefaults.cardColors(containerColor = Color.Black,
+                ),
+            border = BorderStroke(width = 1.dp, color = Color.Yellow)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -160,15 +164,15 @@ fun LandingPage(navController: NavController) {
                 onClick = {
                     navController.navigate(Screens.RegisterPage.route)
                 },
-                modifier = Modifier.width(110.dp),
+                modifier = Modifier.width(120.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
+                    containerColor = Color.DarkGray,
                 ),
             ) {
                 Text(
                     "Register Patent",
-                    color = Color.Black,
+                    color = Color.White,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     fontFamily = anticRegular
@@ -182,12 +186,12 @@ fun LandingPage(navController: NavController) {
                 modifier = Modifier.width(110.dp),
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White,
+                    containerColor = Color.DarkGray,
                 ),
             ) {
                 Text(
                     "Transfer Patent",
-                    color = Color.Black,
+                    color = Color.White,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Center,
                     fontFamily = anticRegular

@@ -8,11 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.Navigation
 import com.example.transfinitte_24_ip_dapp.navigation.Navigation
 import com.example.transfinitte_24_ip_dapp.ui.theme.TRANSFINITTE24IPdappTheme
 import dagger.hilt.android.AndroidEntryPoint
