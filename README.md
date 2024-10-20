@@ -6,12 +6,15 @@ The Decentralized Patent Registry DApp is a blockchain-based platform for regist
 
 The project leverages Etherium (or compatible EVM networks) for smart contracts and enables patent owners to register their inventions, transfer ownership, and verify patent details without relying on centralized authorities.We use **Etherlink** to deploy it on the EVM network.
 
+Every author will be identified uniquely by their wallet id which alligns with the idea of decentralisation.
+
 ## **Features**
 **These features are available on our dapp**
 - **Patent Registration**: Users can register a patent by providing its title, description, and associating it with their blockchain wallet address.
 - **Ownership Transfer**: The DApp allows patent owners to transfer ownership of patents to another address securely.
 - **Patent Lookup**: Anyone can query patent details like title, description, and current owner.
 - **Decentralization**: Powered by Ethereum (or any EVM-compatible blockchain), this DApp eliminates the need for intermediaries or centralized control.
+
 
 ## **Tech Stack**
 - **Kotlin**: Used for implementing the frontend of the dapp.
@@ -33,6 +36,13 @@ Here are some screenshots of the Android app:
 
 ## Patent Transfer
 ![Patent Transfer Screen](images/transfer.jpeg)
+
+## Etherlink deployment using remix 
+![Etherlink deployment](images/Remix_deployment.png)
+
+## Transaction details on metamask wallet
+- **We have used metamask wallets to test the working of the block chain here we can see the gas transcations being made and the users wallet is working, every author will have their unique id** 
+![Etherlink deployment](images/transactions.png)
 
 ## **Smart Contract Details**
 The `PatentRegistry` smart contract allows users to:
