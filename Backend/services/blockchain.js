@@ -32,7 +32,14 @@ async function registerPatentOnBlockchain(title, description, userAddress) {
 
         // Send the signed transaction
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-        return receipt;  // Return transaction receipt on success
+        // Convert BigInt values to strings
+        const processedReceipt = JSON.parse(JSON.stringify(receipt, (key, value) =>
+            typeof value === 'bigint' ? value.toString() : value
+        ));
+
+        return processedReceipt;
+
+        // return receipt;  // Return transaction receipt on success
     } catch (error) {
         console.error("Error registering patent:", error);
         throw error;
