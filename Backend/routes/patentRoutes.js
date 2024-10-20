@@ -1,17 +1,12 @@
+// routes/patentRoutes.js
+
 const express = require('express');
 const router = express.Router();
-const { registerPatent, transferPatent,renewPatent,getPatentDetails}= require('../controllers/patentController');
+const { registerPatent, transferPatent, getPatentDetails } = require('../controllers/patentController');
 
-// Route to register a patent
-router.post('/register', registerPatent);
-
-// Route to transfer a patent
-router.post('/transfer', transferPatent);
-
-// Route to renew a patent
-router.post('/renew', renewPatent);
-
-router.get('/patentDetails',getPatentDetails)
+router.post('/registerPatent', registerPatent);
+router.post('/transferPatent', transferPatent);
+router.get('/patentDetails/:patentId', getPatentDetails);
 
 module.exports = router;
 
