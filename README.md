@@ -17,7 +17,7 @@ Every author will be identified uniquely by their wallet id which alligns with t
 
 
 ## **Tech Stack**
-- **Kotlin**: Used for implementing the frontend of the dapp.
+- **Kotlin**: Used for implementing the frontend of the dapp as a native Android app.
 - **Solidity**: Smart contracts written in Solidity to handle patent registration, transfers, and lookups.
 - **Ethereum (or Sepolia Testnet)**: Deployed on an EVM-compatible network.
 - **Web3.js**: Interact with the smart contract through a Node.js backend.
@@ -41,7 +41,8 @@ Here are some screenshots of the Android app:
 ![Etherlink deployment](images/Remix_deployment.png)
 
 ## Transaction details on metamask wallet
-- **We have used metamask wallets to test the working of the block chain here we can see the gas transcations being made and the users wallet is working, every author will have their unique id** 
+- We have used metamask wallets to test the working of the block chain - here we can see the gas transcations being made and the users wallet is working.
+- **Every author will have their unique id in the actual implementation of the app.** 
 ![Etherlink deployment](images/transactions.png)
 
 ## **Smart Contract Details**
