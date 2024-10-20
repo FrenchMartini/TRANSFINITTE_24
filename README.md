@@ -1,6 +1,31 @@
 
 # **Decentralized Patent Registry DApp**
 
+## **Table of Contents**
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Android App](#android-app)
+  - [Home Screen](#home-screen)
+  - [Patent Registration](#patent-registration)
+  - [Patent Transfer](#patent-transfer)
+  - [Etherlink Deployment](#etherlink-deployment)
+  - [Transaction Details](#transaction-details)
+- [Smart Contract Details](#smart-contract-details)
+  - [Smart Contract Code](#smart-contract-code)
+- [How to Run the Project](#how-to-run-the-project)
+  - [Prerequisites](#prerequisites)
+  - [Smart Contract Deployment](#smart-contract-deployment)
+  - [Backend Setup](#backend-setup)
+  - [API Endpoints](#api-endpoints)
+- [Testing the Smart Contract](#testing-the-smart-contract)
+- [Future Improvements](#future-improvements)
+- [Contributing](#contributing)
+- [License](#license)
+
+---
+# **Decentralized Patent Registry DApp**
+
 ## **Project Overview**
 The Decentralized Patent Registry DApp is a blockchain-based platform for registering, managing, and transferring ownership of patents. This decentralized solution ensures transparency, immutability, and verifiable ownership, offering a secure way to protect intellectual property on a public blockchain. 
 
@@ -37,10 +62,10 @@ Here are some screenshots of the Android app:
 ## Patent Transfer
 ![Patent Transfer Screen](Images/transfer.jpeg)
 
-## Etherlink deployment using remix 
+## Etherlink Deployment  
 ![Etherlink deployment](Images/Remix_deployment.png)
 
-## Transaction details on metamask wallet
+## Transaction details 
 - We have used metamask wallets to test the working of the block chain - here we can see the gas transcations being made and the users wallet is working.
 - **Every author will have their unique id in the actual implementation of the app.** 
 ![Etherlink deployment](Images/transactions.png)
