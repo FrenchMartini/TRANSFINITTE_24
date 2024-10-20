@@ -4,6 +4,9 @@ const { abi } = require('../Contracts/PatentRegistry.json'); // Adjust the path 
 
 const web3 = new Web3(process.env.INFURA_API_URL);
 const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
+// Log the ABI
+console.log('Contract ABI:', contract.options.jsonInterface);
+
 // Register a new patent on the blockchain
 async function registerPatentOnBlockchain(title, abstractText, description, ipfsHash, userAddress) {
     try {
@@ -64,6 +67,7 @@ async function transferPatentOnBlockchain(patentId, fromAddress, toAddress) {
         throw error;
     }
 }
+
 
 // Renew a patent on the blockchain
 async function renewPatentOnBlockchain(patentId, userAddress) {

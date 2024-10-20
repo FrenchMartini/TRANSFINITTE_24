@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const patentController= require('../controllers/patentController');
+const { registerPatent, transferPatent,renewPatent,getPatentDetails}= require('../controllers/patentController');
+
 
 router.post('/register', patentController.registerPatent);
 
@@ -14,6 +15,11 @@ router.get('/owner/:ownerAddress', patentController.getOwnerPatents);
 
 router.get('/search/:query', patentController.searchPatents);
 
+
+// Route to renew a patent
+router.post('/renew', renewPatent);
+
+router.get('/patentDetails',getPatentDetails)
 
 module.exports = router;
 
