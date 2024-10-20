@@ -2,6 +2,7 @@
 const { registerPatentOnBlockchain, transferPatentOnBlockchain,renewPatentOnBlockchain } = require('../services/blockchain');
 
 
+
 // Example of calling a function
 // const renewPatent = async (req, res) => {
 //     const { patentId, userAddress } = req.body;
@@ -13,10 +14,9 @@ const { registerPatentOnBlockchain, transferPatentOnBlockchain,renewPatentOnBloc
 //     }
 // };
 const registerPatent = async (req, res) => {
-    const { title, description } = req.body;
+    const { title, abstractText, description, ipfsHash, userAddress } = req.body;
     try {
-        // Call your blockchain function here
-        const result = await registerPatentOnBlockchain(title, description, req.body.userAddress);
+        const result = await registerPatentOnBlockchain(title, abstractText, description, ipfsHash, userAddress);
         return res.status(200).json({ message: 'Patent registered successfully!', data: result });
     } catch (error) {
         return res.status(500).json({ message: 'Error registering patent', error: error.message });
@@ -33,13 +33,14 @@ const registerPatent = async (req, res) => {
 // };
 
 const transferPatent = async (req, res) => {
-    const { patentId, toAddress } = req.body;
+    const { patentId, toAddress, fromAddress } = req.body;
     try {
         if (!patentId || !toAddress) {
             return res.status(400).json({ message: 'patentId and toAddress are required.' });
         }
         // Simulating blockchain call
         const result = await transferPatentOnBlockchain(patentId, toAddress); // Modify this function as per your logic
+
         return res.status(200).json({ message: 'Patent transferred successfully!', data: result });
     } catch (error) {
         console.error('Error in transferPatent:', error); // More detailed logging
@@ -50,6 +51,7 @@ const transferPatent = async (req, res) => {
 
 const renewPatent = async (req, res) => {
     console.log(req.body); // Log the request body
+
     const { patentId, userAddress } = req.body;
     try {
         const result = await renewPatentOnBlockchain(patentId, userAddress);
@@ -90,3 +92,53 @@ const getPatentDetails = async (req,res) => {
 
 module.exports = { registerPatent, transferPatent ,renewPatent,getPatentDetails};
 
+
+const grantPatent = async (req, res) => {
+    const { patentId } = req.body; // Assuming the admin address is retrieved from the request context
+    try {
+        const result = await grantPatentOnBlockchain(patentId);
+        return res.status(200).json({ message: 'Patent granted successfully!', data: result });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error granting patent', error: error.message });
+    }
+};
+
+const getPatentDetails = async (req, res) => {
+    const { patentId } = req.params;
+    try {
+        const result = await getPatentDetailsFromBlockchain(patentId);
+        return res.status(200).json({ data: result });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error fetching patent details', error: error.message });
+    }
+};
+
+const getOwnerPatents = async (req, res) => {
+    const { ownerAddress } = req.params;
+    try {
+        const result = await getOwnerPatentsFromBlockchain(ownerAddress);
+        return res.status(200).json({ data: result });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error fetching owner patents', error: error.message });
+    }
+};
+
+const searchPatents = async (req, res) => {
+    const { query } = req.params;
+    try {
+        const result = await searchPatentsOnBlockchain(query);
+        return res.status(200).json({ data: result });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error searching patents', error: error.message });
+    }
+};
+
+module.exports = { 
+    registerPatent, 
+    transferPatent, 
+    renewPatent, 
+    grantPatent, 
+    getPatentDetails, 
+    getOwnerPatents, 
+    searchPatents 
+};

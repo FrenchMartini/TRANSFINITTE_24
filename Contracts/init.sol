@@ -16,7 +16,6 @@ contract PatentRegistry {
         uint256 registrationDate;
         uint256 expirationDate;
         string ipfsHash;
-
         Status status;  // Add status field
     }
 
@@ -79,7 +78,6 @@ contract PatentRegistry {
             registrationDate: block.timestamp,
             expirationDate: block.timestamp + DURATION,
             ipfsHash: _ipfsHash,
-
             status: Status.Registered  // Set status to Registered on registration
         });
 
@@ -104,12 +102,13 @@ contract PatentRegistry {
         emit PatentTransferred(_patentId, msg.sender, _to);
     }
 
-   function renewPatent(uint256 _patentId) public {
-    require(patents[_patentId].owner == msg.sender, "You are not the owner of this patent");
-    patents[_patentId].expirationDate += DURATION;
-    emit PatentRenewed(_patentId, patents[_patentId].expirationDate);
-}
+    function renewPatent(uint256 _patentId) public {
+        require(patents[_patentId].owner == msg.sender, "You are not the owner of this patent");
 
+        patents[_patentId].expirationDate += DURATION;
+
+        emit PatentRenewed(_patentId, patents[_patentId].expirationDate);
+    }
 
     // Function to change the status of a patent to Granted (admin-only)
     function grantPatent(uint256 _patentId) public onlyAdmin {
@@ -127,7 +126,6 @@ contract PatentRegistry {
         uint256 registrationDate, 
         uint256 expirationDate, 
         string memory ipfsHash, 
-
         Status status
     ) {
         Patent memory patent = patents[_patentId];
@@ -140,7 +138,6 @@ contract PatentRegistry {
             patent.registrationDate, 
             patent.expirationDate, 
             patent.ipfsHash, 
-
             patent.status
         );
     }

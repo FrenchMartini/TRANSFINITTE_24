@@ -6,11 +6,12 @@ const web3 = new Web3(process.env.INFURA_API_URL);
 const contract = new web3.eth.Contract(abi, process.env.CONTRACT_ADDRESS);
 // Log the ABI
 console.log('Contract ABI:', contract.options.jsonInterface);
+
 // Register a new patent on the blockchain
-async function registerPatentOnBlockchain(title, description, userAddress) {
+async function registerPatentOnBlockchain(title, abstractText, description, ipfsHash, userAddress) {
     try {
         // Create the transaction object
-        const tx = contract.methods.registerPatent(title, description);
+        const tx = contract.methods.registerPatent(title, abstractText, description, ipfsHash);
         
         // Estimate gas
         const gas = await tx.estimateGas({ from: userAddress });
@@ -33,19 +34,19 @@ async function registerPatentOnBlockchain(title, description, userAddress) {
 
         // Send the signed transaction
         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        
         // Convert BigInt values to strings
         const processedReceipt = JSON.parse(JSON.stringify(receipt, (key, value) =>
             typeof value === 'bigint' ? value.toString() : value
         ));
 
         return processedReceipt;
-
-        // return receipt;  // Return transaction receipt on success
     } catch (error) {
         console.error("Error registering patent:", error);
         throw error;
     }
 }
+
 // Transfer patent ownership on the blockchain
 async function transferPatentOnBlockchain(patentId, fromAddress, toAddress) {
     try {
@@ -67,21 +68,88 @@ async function transferPatentOnBlockchain(patentId, fromAddress, toAddress) {
     }
 }
 
-// services/blockchain.js
-const renewPatentOnBlockchain = async (patentId, userAddress) => {
-    try {
-        console.log('Contract Methods:', contract.methods);
 
-        const result = await contract.methods.renewPatent(patentId).send({ from: userAddress });
+// Renew a patent on the blockchain
+async function renewPatentOnBlockchain(patentId, userAddress) {
+    try {
+        const tx = contract.methods.renewPatent(patentId);
+        const gas = await tx.estimateGas({ from: userAddress });
+        const gasPrice = await web3.eth.getGasPrice();
+        const data = tx.encodeABI();
+
+        const signedTx = await web3.eth.accounts.signTransaction(
+            { to: process.env.CONTRACT_ADDRESS, data, gas, gasPrice, from: userAddress },
+            process.env.PRIVATE_KEY
+        );
+
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        return receipt;
+    } catch (error) {
+        console.error("Error renewing patent:", error);
+        throw error;
+    }
+}
+
+// Grant a patent on the blockchain (admin only)
+async function grantPatentOnBlockchain(patentId) {
+    try {
+        const tx = contract.methods.grantPatent(patentId);
+        const gas = await tx.estimateGas({ from: process.env.ADMIN_ADDRESS }); // Assuming ADMIN_ADDRESS is set in .env
+        const gasPrice = await web3.eth.getGasPrice();
+        const data = tx.encodeABI();
+
+        const signedTx = await web3.eth.accounts.signTransaction(
+            { to: process.env.CONTRACT_ADDRESS, data, gas, gasPrice, from: process.env.ADMIN_ADDRESS },
+            process.env.PRIVATE_KEY
+        );
+
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+        return receipt;
+    } catch (error) {
+        console.error("Error granting patent:", error);
+        throw error;
+    }
+}
+
+// Get patent details from the blockchain
+async function getPatentDetailsFromBlockchain(patentId) {
+    try {
+        const result = await contract.methods.getPatentDetails(patentId).call();
         return result;
     } catch (error) {
-        throw new Error('Error renewing patent on blockchain: ' + error.message);
+        console.error("Error fetching patent details:", error);
+        throw error;
     }
-};
+}
+
+// Get all patents owned by a specific address
+async function getOwnerPatentsFromBlockchain(ownerAddress) {
+    try {
+        const result = await contract.methods.getOwnerPatents(ownerAddress).call();
+        return result;
+    } catch (error) {
+        console.error("Error fetching owner patents:", error);
+        throw error;
+    }
+}
+
+// Search for patents by title or abstract
+async function searchPatentsOnBlockchain(query) {
+    try {
+        const result = await contract.methods.searchPatents(query).call();
+        return result;
+    } catch (error) {
+        console.error("Error searching patents:", error);
+        throw error;
+    }
+}
 
 module.exports = {
     registerPatentOnBlockchain,
     transferPatentOnBlockchain,
-    renewPatentOnBlockchain
-
+    renewPatentOnBlockchain,
+    grantPatentOnBlockchain,
+    getPatentDetailsFromBlockchain,
+    getOwnerPatentsFromBlockchain,
+    searchPatentsOnBlockchain
 };
