@@ -4,8 +4,8 @@ const express = require('express');
 const router = express.Router();
 const { registerPatent, transferPatent, getPatentDetails } = require('../controllers/patentController');
 
-router.post('/registerPatent', registerPatent);
-router.post('/transferPatent', transferPatent);
+router.post('/register', registerPatent);
+router.post('/transfer', transferPatent);
 router.get('/patentDetails/:patentId', getPatentDetails);
 
 module.exports = router;
