@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
             TRANSFINITTE24IPdappTheme {
                 Scaffold(modifier =  Modifier.fillMaxSize()) { innerPadding ->
                     Box(modifier = Modifier.padding(innerPadding).fillMaxSize()) {
-                        Navigation()
+                        Navigation(this@MainActivity)
                     }
                 }
             }
