@@ -12,7 +12,7 @@ Every author will be identified uniquely by their wallet id which alligns with t
 **These features are available on our dapp**
 - **Patent Registration**: Users can register a patent by providing its title, description, and associating it with their blockchain wallet address.
 - **Ownership Transfer**: The DApp allows patent owners to transfer ownership of patents to another address securely.
-- **Patent Lookup**: Anyone can query patent details like title, description, and current owner.
+- **Patent Lookup(WIP)**: Anyone can query patent details like title, description, and current owner.
 - **Decentralization**: Powered by Ethereum (or any EVM-compatible blockchain), this DApp eliminates the need for intermediaries or centralized control.
 
 
